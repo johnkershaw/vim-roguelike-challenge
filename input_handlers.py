@@ -21,6 +21,7 @@ def keydown_to_char(event:tcod.event.KeyDown) -> Optional[str]:
     """Convert keydown event to a character (including correct
     handling of shift key).
 
+    TODO Make optional? 
     Also converts arrow keys to vim directions (hjkl).
     
     Returns None for non alphanumeric/punctuation characters
@@ -28,7 +29,10 @@ def keydown_to_char(event:tcod.event.KeyDown) -> Optional[str]:
     
     TODO Is it worth also supporting capslock?  Probably not.
     TODO Dvorak and other layouts, maybe?
+    TODO European keyboards switch @ and ", #~ on same key
+    
     """
+    ALLOW_ARROW_KEYS = False  # hjkl good, arrows bad :)
     symbols = "`1234567890-=[]\;',./"
     shift_symbols = '~!@#$%^&*()_+{}|:"<>?'
     letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -42,7 +46,7 @@ def keydown_to_char(event:tcod.event.KeyDown) -> Optional[str]:
 
     if label == "Space":
         return " "
-    elif label in arrow_to_letter:
+    elif ALLOW_ARROW_KEYS and label in arrow_to_letter:
         return arrow_to_letter[label]
     elif label in symbols:
         if shift_pressed:

@@ -26,7 +26,7 @@ help_text = {
     "hp":"Health is lost when being attacked by enemies, and can be recovered by consuming corpses.",
     "strength":"How much damage you deal when attacking.\nUpgrade for 10 gold with :upgrade strength.",
     "armour":"Provides resistance to attacks.  Damage less than your armour class is halved, and damage less than a quarter of your armour class is avoided entirely.\nUpgrade for 10 gold with :upgrade armour",
-    "range":"The maximum number you can use in a movement command.  For example, if your range is 5 then the command d9l would be interpreted as d5l.\nUpgrade for 10 gold with :upgrade armour",
+    "range":"The maximum number you can use in a movement command.  For example, if your range is 5 then the command d9l would be interpreted as d5l.\nUpgrade for 10 gold with :upgrade range",
     "gold":"Gold can be spent on stat upgrades (see :help upgrade).",
     "abilities":"Typically granted by an equipped item, abilities allow you to perform various commands or modify the effect of other commands.\nAll classes of character start with some intrinsic abilities, in addition to any subsequently obtained.",
 
@@ -45,7 +45,7 @@ help_text = {
     "p":"Type p to put (i.e. drop) objects. \"rp will drop the item in register r.",
     "h":"h : Move left.",
     "j":"j : Move down.",
-    "k":"k : Move k.",
+    "k":"k : Move up.",
     "l":"l : Move right.",
     "'":"'a will move to the spot previously marked using command ma\n(where a could be replaced with any lowercase alphabetic character), assuming you have this ability.",
     "`":"`a will move to the spot previously marked using command ma\n(where a could be replaced with any lowercase alphabetic character), assuming you have this ability.",
@@ -64,7 +64,7 @@ help_text = {
     "scroll":"A single-use item that executes a command when consumed.  Use @r to read the scroll in register r.",
     "crossbow":"Enables the ranged ability when equipped (see :help ranged)",
     "bat ears":"Enables echolocation when equipped (see :help echolocate)",
-    "magnet":"Makes the player magnetic when equipped (see :help echolocate)",
+    "magnet":"Makes the player magnetic when equipped (see :help magnetic)",
     "landmine":"Explodes after you step off it, dealing 15 damage that bypasses armour.",
     "altar":"Return to the altar with the Amulet of Yendor equipped to appease the gods and win the text editor holy war.",
 
