@@ -29,9 +29,11 @@ def keydown_to_char(event:tcod.event.KeyDown) -> Optional[str]:
     
     TODO Is it worth also supporting capslock?  Probably not.
     TODO Dvorak and other layouts, maybe?
-    TODO European keyboards switch @ and ", #~ on same key
+    TODO European keyboards switch @ and ", #~ on same key, ` between ESC and TAB
     
     """
+    # TODO Add ALLOW_ARROW_KEYS as an option at the menu?
+    # TODO Move this to VimRC with other constants?
     ALLOW_ARROW_KEYS = False  # hjkl good, arrows bad :)
     symbols = "`1234567890-=[]\;',./"
     shift_symbols = '~!@#$%^&*()_+{}|:"<>?'
