@@ -5,6 +5,7 @@ from typing import List, TYPE_CHECKING
 from components.base_component import BaseComponent
 from components.ability import Ability
 import exceptions
+import colors
 
 if TYPE_CHECKING:
     from entity import Actor, Item
@@ -65,26 +66,37 @@ class Inventory(Ability):
         self.parent.engine.message_log.add_message(
             f'Swapped "{a} and "{b}')
 
-    def get_summary(self) -> List[str]:
+    def get_summary(self) -> list[str | tuple[str, tuple[int,int,int]]]:
         """ Return a list of lines summarizine the contents of
         the inventory in human-readable form.
 
         TODO Use colours?
         """
-        lines = [
+        lines:list[str | tuple[str, tuple[int,int,int]]] = [
             f"{self.parent.name} inventory",
             len(f"{self.parent.name} inventory")*"~",
             " ",
-            "Equipped:"
         ]
-        for key in self.equipped_registers:
-            if key in self.registers:
-                lines.append(f" {key}) {self.registers[key].name}")
-        lines.extend([" ","Unequipped:"])
-        for key in "abcdefghijklmnopqrstuvwxyz":
-            if key in self.registers:
-                lines.append(f" {key}) {self.registers[key].name}")
-        return lines
+        areas = {
+            'Equipped':self.equipped_registers,
+            'Unequipped': "abcdefghijklmnopqrstuvwxyz", 
+            }
+        for area,slots in areas.items():
+            lines.extend([area + ':'])
+            for key in slots:
+                if key in self.registers:
+                    item_name = self.registers[key].name
+                    text = f" {key}) {item_name}"
+                    if 'corpse' in item_name:
+                        lines.append((text, colors.corpse))
+                    elif 'scroll' in item_name:
+                        lines.append((text, colors.scroll))
+                    elif 'amulet' in item_name:
+                        lines.append((text, colors.amulet))
+                    else:
+                        lines.append(f" {key}) {item_name}")
+            lines.extend([" "])
+        return lines[:-1]  # skip trailing blank line
 
     def get_last_used_register(self) -> Optional[str]:
         """ Return the register last used that still contains stuff.

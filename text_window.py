@@ -61,7 +61,7 @@ class TextWindow:
             # Exit modal mode.
             self.engine.event_handler = MainGameEventHandler(self.engine)
 
-    def show(self,texts:Union[List[str],List[Tuple[str,Tuple[int,int,int]]]],
+    def show(self, texts: list[str | tuple[str, tuple[int,int,int]]],
             message_log_mode=False):
         """ Begin showing the text. Texts can be either strings, or
          tuples of (string, color).
@@ -71,8 +71,6 @@ class TextWindow:
         
         In normal mode, if necessary we enter an input-handling mode
         based on "press any key to continue" behaviour.
-
-        If provided, length of `colors` must match length of `messages`.
         """
         self.offset = 0
         self.message_log_mode = message_log_mode
@@ -86,11 +84,11 @@ class TextWindow:
         # Set up the pagination
 
         # First, separate texts into wrapped lines
-        color_included = isinstance(texts[0],tuple)
         self.current_page = 0
         page_height = self.height - 1
         final_lines = []
         for item in texts:
+            color_included = isinstance(item,tuple)
             if color_included:
                 line, color = item
             else:

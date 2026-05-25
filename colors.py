@@ -45,11 +45,12 @@ needle = light_red
 vimic = needle
 vimpire = red
 
-# Items
-amulet = default_fg 
+# Items / Inventory
+amulet = orange 
 equipment = default_fg
-scroll = default_fg
+scroll = medium_blue
 gold = yellow 
+corpse = red 
 
 # Map trace colours
 default_trace = light_blue # A fairly neutral faint teal
