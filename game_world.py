@@ -55,7 +55,7 @@ class GameWorld:
         self.tutorial = tutorial
 
     @property
-    def progress_summary(self) -> None:
+    def progress_summary(self) -> str | None:
         """ Return a vim-style summary of progress through the level,
         e.g. Top, Bottom, or a percentage."""
         if self.current_floor == 0:

@@ -105,7 +105,7 @@ class EventHandler(tcod.event.EventDispatch[actions.Action]):
         actions.EscapeAction(self.engine.player).perform()
 
 class MainMenuEventHandler(EventHandler):
-    def ev_quit(self,event:tcod.event.QUit) -> Optional[Action]:
+    def ev_quit(self,event:tcod.event.Quit) -> Optional[Action]:
         raise SystemExit()
 
     def ev_keydown(self, event: tcod.event.KeyDown) -> Tuple[Optional[Action],bool]:

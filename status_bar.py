@@ -56,16 +56,18 @@ class StatusBar:
                 fg = colors.tutorial_fg
                 bg = colors.tutorial_bg
             text = self.long_message
-            console.print(x=1,y=38,string=text,fg=fg,bg=bg)
+            console.print(x=1,y=38,text=text,fg=fg,bg=bg)
         else:
             # Render default text, i.e. the x,y and %/top/etc.
             #  TODO Figure out what the %/top/bottom/all represents.
             #  Maybe progress towards the final level?
+            turns_text = f"Turn: {self.engine.turn:5d}"
+            console.print(x=17,y=38,text=turns_text,fg=fg,bg=bg)
             x,y = self.engine.coords_to_show
             position_text = f"{x:2d},{y:2d}"
-            console.print(x=33,y=38,string=position_text,fg=fg,bg=bg)
+            console.print(x=33,y=38,text=position_text,fg=fg,bg=bg)
             progress = self.engine.game_world.progress_summary
-            console.print(x=42,y=38,string=f"{progress:>6}",fg=fg,bg=bg)
-            console.print(x=1,y=38,string=self.short_message,fg=fg,bg=bg)
+            console.print(x=42,y=38,text=f"{progress:>6}",fg=fg,bg=bg)
+            console.print(x=1,y=38,text=self.short_message,fg=fg,bg=bg)
 
 
