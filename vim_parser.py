@@ -146,7 +146,7 @@ class VimCommandParser:
                 text = help_text[synonyms[query]].split("\n")
                 self.engine.text_window.show(text)
             elif query[:10] == "scroll of ":
-                self.engine.text_window.show(["Try it and find out."])
+                self.engine.text_window.show(["Try it and find out. Hint: \a matches any monster"])
             elif query[:6] == "amulet":
                 self.engine.text_window.show(["No documentation for individual amulets (try :help amulet)"])
             else:
