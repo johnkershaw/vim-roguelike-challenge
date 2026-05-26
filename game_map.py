@@ -34,6 +34,7 @@ class GameMap:
         self.downstairs_location:Optional[Tuple[int,int]] = None
         self.upstairs_location:Optional[Tuple[int,int]] = None
         self.name=name
+        self.turn_bonus = 500
 
         # Can currently see:
         self.visible = np.full((width,height),fill_value=False,order="F")
@@ -49,7 +50,7 @@ class GameMap:
         self.highlight = np.full((width,height),fill_value=False,order="F")
 
         # Set of location markers
-        self.marks = {}
+        self.marks = {}  # TODO JK make these visible on map? greyed letters?
 
     @property
     def items(self) -> Iterator[item]:
@@ -323,7 +324,7 @@ class GameMap:
         and otherwise use "unseen" colors.
         """
 
-        console.tiles_rgb[0:self.width,0:self.height] = np.select(
+        console.rgb[0:self.width,0:self.height] = np.select(
             condlist=[self.visible,self.explored],
             choicelist=[self.tiles["light"],self.tiles["dark"]],
             default=self.tiles["unseen"]
