@@ -194,7 +194,7 @@ class Upgrade(Action):
             else:
                 raise exceptions.UserError(f"Unknown property {self.to_upgrade}")
         if self.entity.gold >= 10:
-            if self.to_upgrade == "strength":
+            if self.to_upgrade in [ "strength", "str" ]:
                 self.entity.fighter.strength += 1
             elif self.to_upgrade in ["ac","armour","armor"]:
                 self.entity.fighter.AC += 2

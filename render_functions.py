@@ -47,12 +47,11 @@ def render_stat_box(console:Console,
     console.print(51,4,string=f"Range    : {max_range}",fg=fg)
     console.print(51,5,string=f"Armour   : {AC}",fg=fg)
     console.print(51,6,string=f"Strength : {strength}",fg=fg)
-    console.print(51,7,string=f"Abilities:",fg=fg)
     ability_str = "\n".join(textwrap.wrap(
-        abilities,width=22,
-        initial_indent="  ",subsequent_indent="  ")
+        "Abilities: " + abilities,width=22,
+        initial_indent="",subsequent_indent="  ")
     )
-    console.print(51,8,string=ability_str,fg=fg)
+    console.print(51,7,string=ability_str,fg=fg)
     console.print(51,14,string=22*"-",fg=fg)
 
     # Left bar

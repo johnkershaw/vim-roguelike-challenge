@@ -166,6 +166,12 @@ class Actor(Entity):
         """Returns True as long as this actor can perform actions."""
         return bool(self.ai)
 
+    def sort_ability(self,ability):
+        abilities = "h j k l y yy d dd 0 $ H M L w e t f m ' `".split(' ')
+        if ability in abilities:
+            return abilities.index(ability)
+        return 1000
+    
     @property
     def ability_string(self) -> str:
         abilities = set([a.ability_string for a in self.abilities])
@@ -174,7 +180,9 @@ class Actor(Entity):
         if "" in abilities:
             # Remove case of non-abilities, e.g. corpses
             abilities.remove("")
-        return ", ".join(list(abilities))
+        abilities = list(abilities)
+        abilities.sort(key=self.sort_ability, )
+        return ", ".join(abilities)
 
     def fulfills(self,requirement:str) -> bool:
         """ Check whether we intrinsically have this ability or
