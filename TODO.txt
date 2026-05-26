@@ -1,0 +1,16 @@
+TODO Add :marks
+TODO Add :jumps
+TODO Add ^I and ^O to move to Older and Newer positions within :jumps
+TODO Add operator-pending in status bar
+TODO Add visual marks (greyed letters)
+TODO Add | operator (go to column)
+TODO Reward vim-like moves? Bonus for fast jumping?
+TODO Add . operator to repeat last action?
+TODO Add Y for yank (yy should yank whole line) 
+TODO Change 'pick up on THIS square' to x? No, that would be 'delete item' not yank to inventory...
+TODO Fix European keyboard switches @ with "
+TODO Display line numbers? Scroll of :set nu & rnu?
+TODO gg = H? 23G? Cross-hair?
+TODO Allow any numbers for movement, after first few levels. 
+TODO Change w and e to left/right wall of current room/corridor (til you hit a wall). Currently not helpful (stand next to monster??). 
+TODO ( and ) could go to top and bottom of current room. { and } for next room??? vs H/L
