@@ -228,7 +228,7 @@ class GameMap:
 
     def make_mark(self,register:str,position:tuple[int,int]) -> None:
         if re.match("[a-z]",register):
-            self.marks[register] = {int(i) for i in position }
+            self.marks[register] = (int(i) for i in position )
             print(f"Set mark {register}")
         else:
             print("Invalid register")
@@ -253,7 +253,7 @@ class GameMap:
         ]
         areas = {
             'a-z': "abcdefghijklmnopqrstuvwxyz",
-            'A-Z': "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 
+            #'A-Z': "ABCDEFGHIJKLMNOPQRSTUVWXYZ",  # TODO global marks?dd
             }
         for area,slots in areas.items():
             lines.extend([area + ':'])
