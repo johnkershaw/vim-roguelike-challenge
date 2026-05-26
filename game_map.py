@@ -220,20 +220,18 @@ class GameMap:
             entities.sort(key=lambda x: x.render_order.value)
         return entities
 
-    def in_bounds(self, position:Tuple[int,int]) -> bool:
+    def in_bounds(self, position:tuple[int,int]) -> bool:
         """ Return true if position is in bounds. """
         x, y = position
         return 0 <= x < self.width and 0 <= y < self.height
 
-    def make_mark(self,register:str,position:Tuple[int,int]) -> None:
+    def make_mark(self,register:str,position:tuple[int,int]) -> None:
         if re.match("[a-z]",register):
-            self.marks[register] = position
+            self.marks[register] = {int(i) for i in position }
             print(f"Set mark {register}")
         else:
             print("Invalid register")
-            # TODO VERY IMPORTANT: This needs to do something better (show
-            #  error message to user), currently it just doesn't.
-            raise NotImplementedError("TODO: Replace with user error message")
+            raise NotImplementedError("Must be a letter a-z eg ma")
 
     def get_mark(self,register:str) -> Optional[Tuple[int,int]]:
         """" Return the position associated with the given
@@ -242,6 +240,28 @@ class GameMap:
             return self.marks[register]
         else:
             return None
+
+    def get_summary(self) -> list[str | tuple[str, tuple[int,int,int]]]:
+        """ Return a list of lines summarizine the contents of
+        the marks list in human-readable form.
+        """
+        lines:list[str | tuple[str, tuple[int,int,int]]] = [
+            (title:=f"Marks"),
+            len(title) * "~",
+            " ",
+        ]
+        areas = {
+            'a-z': "abcdefghijklmnopqrstuvwxyz",
+            'A-Z': "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 
+            }
+        for area,slots in areas.items():
+            lines.extend([area + ':'])
+            for key in slots:
+                if key in self.marks:
+                    x,y = self.marks[key]
+                    lines.append(f" {key}) {x:>2}, {y:<2}")
+            lines.extend([" "])
+        return lines[:-1]  # skip trailing blank line
 
     def get_mono_path(self,start:Tuple[int,int],end:Tuple[int,int]) -> Path:
         """ Returns the straight-line path from a given start point to

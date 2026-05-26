@@ -69,8 +69,6 @@ class Inventory(Ability):
     def get_summary(self) -> list[str | tuple[str, tuple[int,int,int]]]:
         """ Return a list of lines summarizine the contents of
         the inventory in human-readable form.
-
-        TODO Use colours?
         """
         lines:list[str | tuple[str, tuple[int,int,int]]] = [
             f"{self.parent.name} inventory",

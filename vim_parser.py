@@ -103,6 +103,12 @@ class VimCommandParser:
         if command in [":reg",":registers"]:
             # Show inventory
             return actions.ShowInventory(self.entity)
+        elif command in [":ju",":jumps"]:
+            # Show jumps list
+            return actions.ShowJumps(self.entity)
+        elif command in [":marks"]:
+            # Show marks list
+            return actions.ShowMarks(self.entity)
         elif command in [":w",";write"]:
             # Save game
             return actions.SaveGame(self.entity)

@@ -123,6 +123,22 @@ class ShowInventory(Action):
         summary = self.entity.inventory.get_summary()
         self.engine.text_window.show(summary,message_log_mode=False)
 
+class ShowJumps(Action):  # TODO Implement this
+    def __init__(self,entity:Actor):
+        super().__init__(entity,skip_turn=True)
+
+    def perform(self) -> None:
+        summary = self.entity.inventory.get_summary()
+        self.engine.text_window.show(summary,message_log_mode=False)
+
+class ShowMarks(Action):  # TODO Implement this
+    def __init__(self,entity:Actor):
+        super().__init__(entity,skip_turn=True)
+
+    def perform(self) -> None:
+        summary = self.entity.gamemap.get_summary()
+        self.engine.text_window.show(summary,message_log_mode=False)
+
 class NextPageAction(Action):
     """ Move to next page when viewing multi-page text."""
     def __init__(self,entity:Actor):
