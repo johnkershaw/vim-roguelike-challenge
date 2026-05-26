@@ -21,8 +21,7 @@ def keydown_to_char(event:tcod.event.KeyDown) -> Optional[str]:
     """Convert keydown event to a character (including correct
     handling of shift key).
 
-    TODO Make optional? 
-    Also converts arrow keys to vim directions (hjkl).
+    TODO Make optional?  Also converts arrow keys to vim directions (hjkl).
     
     Returns None for non alphanumeric/punctuation characters
     (e.g. backspace etc.)
@@ -35,8 +34,12 @@ def keydown_to_char(event:tcod.event.KeyDown) -> Optional[str]:
     # TODO Add ALLOW_ARROW_KEYS as an option at the menu?
     # TODO Move this to VimRC with other constants?
     ALLOW_ARROW_KEYS = False  # hjkl good, arrows bad :)
+    UK_KEYBOARD = True
     symbols = "`1234567890-=[]\;',./"
     shift_symbols = '~!@#$%^&*()_+{}|:"<>?'
+    shift_symbols_uk = '¬!"£$%^&*()_+{}|:@<>?'
+    if UK_KEYBOARD:
+        shift_symbols = shift_symbols_uk
     letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     unshifted_letters = "abcdefghijklmnopqrstuvwxyz"
     arrow_to_letter = {
@@ -105,7 +108,7 @@ class EventHandler(tcod.event.EventDispatch[actions.Action]):
         actions.EscapeAction(self.engine.player).perform()
 
 class MainMenuEventHandler(EventHandler):
-    def ev_quit(self,event:tcod.event.Quit) -> Optional[Action]:
+    def ev_quit(self,event:tcod.event.QUit) -> Optional[Action]:
         raise SystemExit()
 
     def ev_keydown(self, event: tcod.event.KeyDown) -> Tuple[Optional[Action],bool]:

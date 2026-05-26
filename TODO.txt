@@ -1,21 +1,21 @@
-TODO Add :marks
+
+TODO Add :marks (to display coords - delete after next TODO)
+TODO Add visual marks (greyed letters)
 TODO Add :jumps
 TODO Add ^I and ^O to move to Older and Newer positions within :jumps
 
 TODO Add operator-pending in status bar
-DONE Sort abilities string by purpose, eg 0$ HML hjkl etc
 
-TODO Add visual marks (greyed letters)
 TODO Reward vim-like moves? Bonus for fast jumping?
 TODO Add . operator to repeat last action?
 TODO Add Y for yank current square (then change yy to yank along whole line) 
 
 TODO Change 'pick up on THIS square' to x? No, that would be 'delete item' not yank to inventory...
-TODO Fix European keyboard switches @ with "
 TODO Display line numbers? Scroll of :set nu & rnu?
 TODO gg = H? 23G? Cross-hair?
 TODO Allow any numbers for movement, after first few levels. 
 TODO Add | operator (go to column)
+
 TODO  < to left  edge of current room
 TODO  > to right edge of current room
 TODO n< to left  edge of nth room to left
@@ -28,3 +28,6 @@ TODO n( moves to top    edge of room above
 TODO n) moves to bottom edge of room above
 TODO  } moves to top    edge of room below
 TODO  { moves to bottom edge of room below
+
+DONE Sort abilities string by purpose, eg 0$ HML hjkl etc
+DONE Fix European keyboard (switches @ with ")

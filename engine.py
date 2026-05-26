@@ -28,7 +28,7 @@ from render_functions import render_stat_box, render_cursor, render_main_menu
 
 if TYPE_CHECKING:
     from entity import Entity, Actor
-    from gamemap import GameMap
+    from game_map import GameMap
     from game_world import GameWorld
     from input_handlers import EventHandler
 
