@@ -128,15 +128,15 @@ class ShowJumps(Action):  # TODO Implement this
         super().__init__(entity,skip_turn=True)
 
     def perform(self) -> None:
-        summary = self.entity.inventory.get_summary()
+        summary = self.entity.gamemap.get_jumpslist()
         self.engine.text_window.show(summary,message_log_mode=False)
 
-class ShowMarks(Action):  # TODO Implement this
+class ShowMarks(Action):
     def __init__(self,entity:Actor):
         super().__init__(entity,skip_turn=True)
 
     def perform(self) -> None:
-        summary = self.entity.gamemap.get_summary()
+        summary = self.entity.gamemap.get_markslist()
         self.engine.text_window.show(summary,message_log_mode=False)
 
 class NextPageAction(Action):

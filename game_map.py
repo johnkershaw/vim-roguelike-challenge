@@ -34,7 +34,8 @@ class GameMap:
         self.downstairs_location:Optional[Tuple[int,int]] = None
         self.upstairs_location:Optional[Tuple[int,int]] = None
         self.name=name
-        self.turn_bonus = 500
+        self.turn_bonus = 100
+        self.past_player_locations = []
 
         # Can currently see:
         self.visible = np.full((width,height),fill_value=False,order="F")
@@ -241,7 +242,7 @@ class GameMap:
         else:
             return None
 
-    def get_summary(self) -> list[str | tuple[str, tuple[int,int,int]]]:
+    def get_markslist(self) -> list[str | tuple[str, tuple[int,int,int]]]:
         """ Return a list of lines summarizine the contents of
         the marks list in human-readable form.
         """
@@ -261,6 +262,20 @@ class GameMap:
                     x,y = self.marks[key]
                     lines.append(f" {key}) {x:>2}, {y:<2}")
             lines.extend([" "])
+        return lines[:-1]  # skip trailing blank line
+
+    def get_jumpslist(self) -> list[str | tuple[str, tuple[int,int,int]]]:
+        """ Return a list of lines summarizine the contents of
+        the jumps list in human-readable form.
+        """
+        lines:list[str | tuple[str, tuple[int,int,int]]] = [
+            (title:=f"Jumps"),
+            len(title) * "~",
+            " ",
+        ]
+        for i, (x,y) in enumerate(self.past_player_locations):
+            lines.append(f" {i}) {x:>2}, {y:<2}")
+        lines.extend([" "])
         return lines[:-1]  # skip trailing blank line
 
     def get_mono_path(self,start:Tuple[int,int],end:Tuple[int,int]) -> Path:
