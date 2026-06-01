@@ -21,16 +21,25 @@ def keydown_to_char(event:tcod.event.KeyDown) -> Optional[str]:
     """Convert keydown event to a character (including correct
     handling of shift key).
 
-    Also converts arrow keys to vim directions (hjkl).
+    TODO Make optional?  Also converts arrow keys to vim directions (hjkl).
     
     Returns None for non alphanumeric/punctuation characters
     (e.g. backspace etc.)
     
     TODO Is it worth also supporting capslock?  Probably not.
     TODO Dvorak and other layouts, maybe?
+    TODO European keyboards switch @ and ", #~ on same key, ` between ESC and TAB
+    
     """
+    # TODO Add ALLOW_ARROW_KEYS as an option at the menu?
+    # TODO Move this to VimRC with other constants?
+    ALLOW_ARROW_KEYS = False  # hjkl good, arrows bad :)
+    UK_KEYBOARD = True
     symbols = "`1234567890-=[]\;',./"
     shift_symbols = '~!@#$%^&*()_+{}|:"<>?'
+    shift_symbols_uk = '¬!"£$%^&*()_+{}|:@<>?'
+    if UK_KEYBOARD:
+        shift_symbols = shift_symbols_uk
     letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     unshifted_letters = "abcdefghijklmnopqrstuvwxyz"
     arrow_to_letter = {
@@ -42,7 +51,7 @@ def keydown_to_char(event:tcod.event.KeyDown) -> Optional[str]:
 
     if label == "Space":
         return " "
-    elif label in arrow_to_letter:
+    elif ALLOW_ARROW_KEYS and label in arrow_to_letter:
         return arrow_to_letter[label]
     elif label in symbols:
         if shift_pressed:
@@ -127,7 +136,7 @@ class MainMenuEventHandler(EventHandler):
                 return actions.StartGame(player,"all commands")
             elif usable_key == "q":
                 raise SystemExit()
-            elif key == tcod.event.K_ESCAPE:
+            elif key == tcod.event.KeySym.ESCAPE:
                 raise SystemExit()
         except TypeError:
             """ Comes from None in "string", ignore."""
@@ -146,13 +155,13 @@ class MainGameEventHandler(EventHandler):
 
         key = event.sym
         usable_key = keydown_to_char(event) # i.e. an ascii char
-        if key == tcod.event.K_BACKSPACE:
+        if key == tcod.event.KeySym.BACKSPACE:
             # Backspace just moves left.
             usable_key = "h"
 
         if usable_key:
             action = self.command_parser.next_key(usable_key)
-        elif key == tcod.event.K_ESCAPE:
+        elif key == tcod.event.KeySym.ESCAPE:
             action = actions.EscapeAction(player)
 
         return action
@@ -177,13 +186,13 @@ class CommandEntryEventHandler(EventHandler):
             # Continue entering the command
             self.text += usable_key
             action = actions.CommandModeStringChanged(player,self.text)
-        elif key == tcod.event.K_BACKSPACE:
+        elif key == tcod.event.KeySym.BACKSPACE:
             self.text = self.text[:-1]
             if self.text == "":
                 action = actions.ExitCommandMode(player)
             else:
                 action = actions.CommandModeStringChanged(player,self.text)
-        elif key == tcod.event.K_RETURN:
+        elif key == tcod.event.KeySym.RETURN:
             # Execute the current command
             if self.text[0] == ":":
                 actions.ExitCommandMode(player).perform() # Also necessary
@@ -194,7 +203,7 @@ class CommandEntryEventHandler(EventHandler):
                 actions.ExitCommandMode(player).perform() # Also necessary
                 action = actions.RegexSearch(player,self.text[1:])
             self.text = ""
-        elif key == tcod.event.K_ESCAPE:
+        elif key == tcod.event.KeySym.ESCAPE:
             action = actions.EscapeAction(player)
         return action
 
@@ -219,7 +228,7 @@ class CursorMovementEventHandler(EventHandler):
         key = event.sym
         usable_key = keydown_to_char(event) # i.e. an ascii char
 
-        if usable_key == "o" or key == tcod.event.K_RETURN:
+        if usable_key == "o" or key == tcod.event.KeySym.RETURN:
             # Exit cursor mode
             self.engine.finish_cursor_input()
             return self.final_action
@@ -229,7 +238,7 @@ class CursorMovementEventHandler(EventHandler):
                 return actions.MoveCursorAction(action)
             else:
                 return None
-        elif key == tcod.event.K_ESCAPE:
+        elif key == tcod.event.KeySym.ESCAPE:
             action = actions.EscapeAction(player)
 
         return action
@@ -238,11 +247,11 @@ class CursorMovementEventHandler(EventHandler):
 class TextWindowPagingEventHandler(EventHandler):
     def ev_keydown(self,event:tcod.event.KeyDown) -> Optional[Action]:
         is_char = bool(keydown_to_char(event))
-        if is_char or event.sym == tcod.event.K_RETURN:
+        if is_char or event.sym == tcod.event.KeySym.RETURN:
             # On a character input or enter key, advance to next page.
             action = actions.NextPageAction(self.engine.player)
             pass
-        elif event.sym == tcod.event.K_ESCAPE:
+        elif event.sym == tcod.event.KeySym.ESCAPE:
             action = actions.EscapeAction(self.engine.player)
         else:
             action = actions.WaitAction(self.engine.player,skip_turn=True)
@@ -268,7 +277,7 @@ class GameOverEventHandler(EventHandler):
             action = actions.HardQuitGame(self.engine.player)
         elif usable_key == "n":
             action = actions.NewGame(self.engine.player)
-        elif key == tcod.event.K_ESCAPE:
+        elif key == tcod.event.KeySym.ESCAPE:
             action = actions.HardQuitGame(self.engine.player)
 
         return action

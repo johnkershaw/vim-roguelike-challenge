@@ -55,7 +55,7 @@ class GameWorld:
         self.tutorial = tutorial
 
     @property
-    def progress_summary(self) -> None:
+    def progress_summary(self) -> str | None:
         """ Return a vim-style summary of progress through the level,
         e.g. Top, Bottom, or a percentage."""
         if self.current_floor == 0:
@@ -87,6 +87,7 @@ class GameWorld:
         if self.current_floor >= len(self.floors):
             new_floor = self.generate_floor(level=self.current_floor)
             self.floors.append(new_floor)
+            self.engine.update_turns_tracker()
             if self.current_floor == self.max_floors:
                 # TODO Also don't place down stair 
                 new_floor.place_randomly(ef.amulet_of_yendor,spawn=True)

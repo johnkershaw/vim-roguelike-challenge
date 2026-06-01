@@ -64,7 +64,7 @@ class VimCommandParser:
 
         # History needed for implementing "u"
         # Note: first position is a lie, ignore it.
-        self.past_player_locations = [] # TODO Should be tied to game map
+        # DELETE self.engine.game_map.past_player_locations = [] 
         self.reset(update_history=False)
 
         self.last_tf_command = "" # For implementing ;
@@ -83,16 +83,16 @@ class VimCommandParser:
         Does not reset the last_tf_command or other similar state that may
         be stored in the future."""
         if update_history:
-            if len(self.past_player_locations) == 0:
+            if len(self.engine.game_map.past_player_locations) == 0:
                 # No history,
-                self.past_player_locations.append(self.entity.pos)
-            if self.entity.pos != self.past_player_locations[-1]:
+                self.engine.game_map.past_player_locations.append(self.entity.pos)
+            if self.entity.pos != self.engine.game_map.past_player_locations[-1]:
                 # Update history
-                self.past_player_locations.append(self.entity.pos)
+                self.engine.game_map.past_player_locations.append(self.entity.pos)
         elif erase_history:
             # I.e. when moving between maps
             # TODO This needs to be handled/encapsulated better somehow
-            self.past_player_locations=[]
+            self.engine.game_map.past_player_locations=[]
         self.partial_command = "" # i.e. command so far
 
     def colon_command(self,command:str) -> Optional[Action]:
@@ -103,6 +103,12 @@ class VimCommandParser:
         if command in [":reg",":registers"]:
             # Show inventory
             return actions.ShowInventory(self.entity)
+        elif command in [":ju",":jumps"]:
+            # Show jumps list
+            return actions.ShowJumps(self.entity)
+        elif command in [":marks"]:
+            # Show marks list
+            return actions.ShowMarks(self.entity)
         elif command in [":w",";write"]:
             # Save game
             return actions.SaveGame(self.entity)
@@ -146,7 +152,7 @@ class VimCommandParser:
                 text = help_text[synonyms[query]].split("\n")
                 self.engine.text_window.show(text)
             elif query[:10] == "scroll of ":
-                self.engine.text_window.show(["Try it and find out."])
+                self.engine.text_window.show(["Try it and find out. Hint: \a matches any monster"])
             elif query[:6] == "amulet":
                 self.engine.text_window.show(["No documentation for individual amulets (try :help amulet)"])
             else:
@@ -544,15 +550,15 @@ class VimCommandParser:
         elif command == "u":
             self.on_non_movement()
             # "Undo" (Move back to location prior to last move)
-            if len(self.past_player_locations) == 0:
+            if len(self.engine.game_map.past_player_locations) == 0:
                 # If no previous locations, do nothing/skip turn
                 self.reset()
                 return actions.WaitAction(player)
-            target = self.past_player_locations.pop()
+            target = self.engine.game_map.past_player_locations.pop()
 
             # If we are already there (sometimes happens with ranged attacks)
-            if target and target == player.pos and len(self.past_player_locations) > 0:
-                target = self.past_player_locations.pop()
+            if target and target == player.pos and len(self.engine.game_map.past_player_locations) > 0:
+                target = self.engine.game_map.past_player_locations.pop()
                 
             self.reset(update_history=False)
             path = self.engine.game_map.get_mono_path(player.pos,

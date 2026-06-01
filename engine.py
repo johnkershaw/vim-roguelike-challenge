@@ -28,7 +28,7 @@ from render_functions import render_stat_box, render_cursor, render_main_menu
 
 if TYPE_CHECKING:
     from entity import Entity, Actor
-    from gamemap import GameMap
+    from game_map import GameMap
     from game_world import GameWorld
     from input_handlers import EventHandler
 
@@ -49,6 +49,7 @@ class Engine:
             self.event_handler: EventHandler = MainGameEventHandler(self)
         self.char_array = None # TODO Figure out type
         self.turn = 0 # Turn counter
+        self.turns_per_level = []
         self.last_save = -1
 
 
@@ -136,6 +137,13 @@ class Engine:
         #    self.player.place(game_map.upstairs_location,game_map)
         self.cursor_entity.parent = self.game_map
 
+    def update_turns_tracker(self):
+        self.turns_per_level.append(self.turn)
+    
+    def turns_this_level(self):
+        return self.turn - self.turns_per_level[self.game_world.current_floor]
+
+        
     def show_error_message(self,text:str) -> None:
         """ Show an error message to the user, in status bar (vim-style)."""
         self.status_bar.set_long_message(text,error=True)

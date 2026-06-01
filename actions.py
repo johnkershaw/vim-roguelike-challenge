@@ -123,6 +123,22 @@ class ShowInventory(Action):
         summary = self.entity.inventory.get_summary()
         self.engine.text_window.show(summary,message_log_mode=False)
 
+class ShowJumps(Action):  # TODO Implement this
+    def __init__(self,entity:Actor):
+        super().__init__(entity,skip_turn=True)
+
+    def perform(self) -> None:
+        summary = self.entity.gamemap.get_jumpslist()
+        self.engine.text_window.show(summary,message_log_mode=False)
+
+class ShowMarks(Action):
+    def __init__(self,entity:Actor):
+        super().__init__(entity,skip_turn=True)
+
+    def perform(self) -> None:
+        summary = self.entity.gamemap.get_markslist()
+        self.engine.text_window.show(summary,message_log_mode=False)
+
 class NextPageAction(Action):
     """ Move to next page when viewing multi-page text."""
     def __init__(self,entity:Actor):
@@ -194,7 +210,7 @@ class Upgrade(Action):
             else:
                 raise exceptions.UserError(f"Unknown property {self.to_upgrade}")
         if self.entity.gold >= 10:
-            if self.to_upgrade == "strength":
+            if self.to_upgrade in [ "strength", "str" ]:
                 self.entity.fighter.strength += 1
             elif self.to_upgrade in ["ac","armour","armor"]:
                 self.entity.fighter.AC += 2
