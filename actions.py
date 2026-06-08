@@ -194,6 +194,42 @@ class SetHLSearchAction(Action):
         self.entity.engine.message_log.add_message(
             "hlsearch is now on.",fg=colors.important)
 
+class SetCursorKeysAction(Action):
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+    def perform(self) -> None:
+        self.entity.engine.allow_arrow_keys=True
+        self.entity.engine.message_log.add_message(
+            "Cursor keys turned ON (use ←↓↑→ to move)",fg=colors.important)
+
+class SetNoCursorKeysAction(Action):
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+    def perform(self) -> None:
+        self.entity.engine.allow_arrow_keys=False
+        self.entity.engine.message_log.add_message(
+            "Cursor keys turned OFF (use hjkl to move)",fg=colors.important)
+
+class SetUKKeyboardAction(Action):
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+    def perform(self) -> None:
+        self.entity.engine.uk_keyboard=True
+        self.entity.engine.message_log.add_message(
+            "UK keyboard layout ON\n(\" above 2, @ above ')",fg=colors.important)
+
+class SetNoUKKeyboardAction(Action):
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+    def perform(self) -> None:
+        self.entity.engine.uk_keyboard=False
+        self.entity.engine.message_log.add_message(
+            "UK keyboard layout OFF\n(\" above ', @ above 2)",fg=colors.important)
+
 class Upgrade(Action):
     def __init__(self,*args,to_upgrade:str,**kwargs):
         super().__init__(*args,**kwargs)

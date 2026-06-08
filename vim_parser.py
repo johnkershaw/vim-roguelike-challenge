@@ -131,6 +131,14 @@ class VimCommandParser:
         elif command == ":set hlsearch":
             # TODO: Make this a dedicated command, which can have requirements 
             return actions.SetHLSearchAction(self.entity)
+        elif command == ":set cursorkeys":
+            return actions.SetCursorKeysAction(self.entity)
+        elif command == ":set nocursorkeys":
+            return actions.SetNoCursorKeysAction(self.entity)
+        elif command == ":set uk":
+            return actions.SetUKKeyboardAction(self.entity)
+        elif command == ":set nouk":
+            return actions.SetNoUKKeyboardAction(self.entity)
         elif re.match(r":(%)?s/(\[a-zA-Z\]|\\a)/(%)?/g?",command):
             m = re.match(r":(%)?s/(\[a-zA-Z\]|\\a)/(%)?/g?",command)
             visible_only = not bool(m.group(1))
@@ -157,7 +165,7 @@ class VimCommandParser:
                 self.engine.text_window.show(["No documentation for individual amulets (try :help amulet)"])
             else:
                 self.engine.text_window.show([f"Sorry, I can't help with {query}."])
-        elif command == ":help":
+        elif command in [":help", ":h"]:
             self.engine.text_window.show([f"Use :help [query] for more information about specific features (e.g. :help controls to learn about controls)."])
 
         # Bonus: some cheats for development

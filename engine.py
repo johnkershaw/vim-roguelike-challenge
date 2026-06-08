@@ -73,6 +73,8 @@ class Engine:
 
         # Global settings
         self.hlsearch = False
+        self.allow_arrow_keys = False  # default to NO cursor keys
+        self.uk_keyboard = False  # default to US keyboard
         # Render invisible, i.e. will tf work outside of fov:
         self.include_invisible_characters = False
 
