@@ -28,18 +28,15 @@ def keydown_to_char(event:tcod.event.KeyDown, engine) -> Optional[str]:
     
     TODO Is it worth also supporting capslock?  Probably not.
     TODO Dvorak and other layouts, maybe?
-    TODO European keyboards switch @ and ", #~ on same key, ` between ESC and TAB
+    TODO European keyboards switch @ and ", #~ on same key, ` between ESC and TAB :set uk  or :set nouk
     
     """
     # :set cursorkeys for ALLOW_ARROW_KEYS=True
     # :set nocursorkeys for ALLOW_ARROW_KEYS=False 
-    # TODO Move this to VimRC with other constants?
-    # Engine.ALLOW_ARROW_KEYS = False  # hjkl good, arrows bad :)
-    UK_KEYBOARD = True
     symbols = "`1234567890-=[]\;',./"
     shift_symbols = '~!@#$%^&*()_+{}|:"<>?'
     shift_symbols_uk = '¬!"£$%^&*()_+{}|:@<>?'
-    if UK_KEYBOARD:
+    if engine and engine.uk_keyboard:
         shift_symbols = shift_symbols_uk
     letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     unshifted_letters = "abcdefghijklmnopqrstuvwxyz"
