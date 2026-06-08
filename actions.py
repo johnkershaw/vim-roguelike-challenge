@@ -194,6 +194,24 @@ class SetHLSearchAction(Action):
         self.entity.engine.message_log.add_message(
             "hlsearch is now on.",fg=colors.important)
 
+class SetCursorKeysAction(Action):
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+    def perform(self) -> None:
+        self.entity.engine.cursorkeys=True
+        self.entity.engine.message_log.add_message(
+            "Cursor keys turned ON (use ←↓↑→ to move)",fg=colors.important)
+
+class SetNoCursorKeysAction(Action):
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+    def perform(self) -> None:
+        self.entity.engine.cursorkeys=False
+        self.entity.engine.message_log.add_message(
+            "Cursor keys turned OFF (use hjkl to move)",fg=colors.important)
+
 class Upgrade(Action):
     def __init__(self,*args,to_upgrade:str,**kwargs):
         super().__init__(*args,**kwargs)

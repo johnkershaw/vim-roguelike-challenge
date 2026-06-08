@@ -131,6 +131,10 @@ class VimCommandParser:
         elif command == ":set hlsearch":
             # TODO: Make this a dedicated command, which can have requirements 
             return actions.SetHLSearchAction(self.entity)
+        elif command == ":set cursorkeys":
+            return actions.SetCursorKeysAction(self.entity)
+        elif command == ":set nocursorkeys":
+            return actions.SetNoCursorKeysAction(self.entity)
         elif re.match(r":(%)?s/(\[a-zA-Z\]|\\a)/(%)?/g?",command):
             m = re.match(r":(%)?s/(\[a-zA-Z\]|\\a)/(%)?/g?",command)
             visible_only = not bool(m.group(1))

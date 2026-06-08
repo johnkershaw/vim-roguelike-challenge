@@ -73,6 +73,7 @@ class Engine:
 
         # Global settings
         self.hlsearch = False
+        self.cursorkeys = False  # default to NO cursor keys
         # Render invisible, i.e. will tf work outside of fov:
         self.include_invisible_characters = False
 
