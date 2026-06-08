@@ -199,7 +199,7 @@ class SetCursorKeysAction(Action):
         super().__init__(*args,**kwargs)
 
     def perform(self) -> None:
-        self.entity.engine.cursorkeys=True
+        self.entity.engine.allow_arrow_keys=True
         self.entity.engine.message_log.add_message(
             "Cursor keys turned ON (use ←↓↑→ to move)",fg=colors.important)
 
@@ -208,7 +208,7 @@ class SetNoCursorKeysAction(Action):
         super().__init__(*args,**kwargs)
 
     def perform(self) -> None:
-        self.entity.engine.cursorkeys=False
+        self.entity.engine.allow_arrow_keys=False
         self.entity.engine.message_log.add_message(
             "Cursor keys turned OFF (use hjkl to move)",fg=colors.important)
 

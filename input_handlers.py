@@ -17,11 +17,11 @@ if TYPE_CHECKING:
     from engine import Engine
     from actions import Action
 
-def keydown_to_char(event:tcod.event.KeyDown) -> Optional[str]:
+def keydown_to_char(event:tcod.event.KeyDown, engine) -> Optional[str]:
     """Convert keydown event to a character (including correct
     handling of shift key).
 
-    TODO Make optional?  Also converts arrow keys to vim directions (hjkl).
+    Also converts arrow keys to vim directions (hjkl).
     
     Returns None for non alphanumeric/punctuation characters
     (e.g. backspace etc.)
@@ -31,9 +31,10 @@ def keydown_to_char(event:tcod.event.KeyDown) -> Optional[str]:
     TODO European keyboards switch @ and ", #~ on same key, ` between ESC and TAB
     
     """
-    # TODO Add ALLOW_ARROW_KEYS as an option at the menu?
+    # :set cursorkeys for ALLOW_ARROW_KEYS=True
+    # :set nocursorkeys for ALLOW_ARROW_KEYS=False 
     # TODO Move this to VimRC with other constants?
-    ALLOW_ARROW_KEYS = False  # hjkl good, arrows bad :)
+    # Engine.ALLOW_ARROW_KEYS = False  # hjkl good, arrows bad :)
     UK_KEYBOARD = True
     symbols = "`1234567890-=[]\;',./"
     shift_symbols = '~!@#$%^&*()_+{}|:"<>?'
@@ -51,7 +52,7 @@ def keydown_to_char(event:tcod.event.KeyDown) -> Optional[str]:
 
     if label == "Space":
         return " "
-    elif ALLOW_ARROW_KEYS and label in arrow_to_letter:
+    elif engine and engine.allow_arrow_keys and label in arrow_to_letter:
         return arrow_to_letter[label]
     elif label in symbols:
         if shift_pressed:
@@ -116,7 +117,7 @@ class MainMenuEventHandler(EventHandler):
         player = self.engine.player
 
         key = event.sym
-        usable_key = keydown_to_char(event) # i.e. an ascii char
+        usable_key = keydown_to_char(event, engine=None) # i.e. an ascii char
 
         try:
             if usable_key in "vV":
@@ -154,7 +155,7 @@ class MainGameEventHandler(EventHandler):
         player = self.engine.player
 
         key = event.sym
-        usable_key = keydown_to_char(event) # i.e. an ascii char
+        usable_key = keydown_to_char(event, engine=self.engine) # i.e. an ascii char
         if key == tcod.event.KeySym.BACKSPACE:
             # Backspace just moves left.
             usable_key = "h"
@@ -180,7 +181,7 @@ class CommandEntryEventHandler(EventHandler):
         player = self.engine.player
 
         key = event.sym
-        usable_key = keydown_to_char(event) # i.e. an ascii char
+        usable_key = keydown_to_char(event, engine=self.engine) # i.e. an ascii char
 
         if usable_key:
             # Continue entering the command
@@ -226,7 +227,7 @@ class CursorMovementEventHandler(EventHandler):
         player = self.engine.player
 
         key = event.sym
-        usable_key = keydown_to_char(event) # i.e. an ascii char
+        usable_key = keydown_to_char(event, engine=self.engine) # i.e. an ascii char
 
         if usable_key == "o" or key == tcod.event.KeySym.RETURN:
             # Exit cursor mode
@@ -246,7 +247,7 @@ class CursorMovementEventHandler(EventHandler):
 
 class TextWindowPagingEventHandler(EventHandler):
     def ev_keydown(self,event:tcod.event.KeyDown) -> Optional[Action]:
-        is_char = bool(keydown_to_char(event))
+        is_char = bool(keydown_to_char(event, engine=self.engine))
         if is_char or event.sym == tcod.event.KeySym.RETURN:
             # On a character input or enter key, advance to next page.
             action = actions.NextPageAction(self.engine.player)
@@ -271,7 +272,7 @@ class GameOverEventHandler(EventHandler):
         action: Optional[Action] = None
         key = event.sym
 
-        usable_key = keydown_to_char(event) # i.e. an ascii char
+        usable_key = keydown_to_char(event, engine=self.engine) # i.e. an ascii char
 
         if usable_key == "q":
             action = actions.HardQuitGame(self.engine.player)
